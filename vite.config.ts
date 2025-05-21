@@ -8,4 +8,17 @@ export default defineConfig({
     react(),
     tailwindcss(),
   ],
+  build: {
+    rollupOptions: {
+      output: {
+        format: 'es',
+      },
+    },
+    commonjsOptions: {
+      transformMixedEsModules: true,
+    }
+  },
+  worker: {
+    format: 'es',
+  }
 })
