@@ -1,4 +1,5 @@
 import { PGliteWorker } from "@electric-sql/pglite/worker";
+import type { Patient } from "../models/Patient.model";
 
 let database: PGliteWorker | null = null;
 
@@ -26,6 +27,7 @@ const initSchema = async (db: PGliteWorker) => {
         medicine TEXT NOT NULL,
         FOREIGN KEY(patient_id) REFERENCES patients(id)
       );
+
   `);
   await db.exec(`
     CREATE INDEX IF NOT EXISTS idx_patient_name ON patients (name);
@@ -52,13 +54,33 @@ export const initDatabase = async (): Promise<PGliteWorker> => {
   return database;
 };
 
-export const getAllPatients = async (): Promise<any[]> => {
+export const getAllPatients = async (): Promise<Patient[]> => {
   const database = await initDatabase();
   try {
     const result = await database.query("SELECT * FROM patients");
-    return result.rows || [];
+    return result.rows as Patient[];
   } catch (error) {
     console.error("Error executing getAllPatients query:", error);
+    throw error;
+  }
+};
+
+export const registerPatient = async (patient: Patient): Promise<number | undefined> => {
+  const database = await initDatabase();
+  try {
+    const result = await database.query(
+      `INSERT INTO patients (name, phone, address, email, dob, sex, height, weight) VALUES($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id`,
+      [patient.name, patient.phone, patient.address ||  null, patient.email || null, patient.dob, patient.sex, patient.height || null, patient.weight || null]
+    );
+    const inserted = result.rows?.[0] as Patient;
+
+    if (inserted === undefined) {
+      throw new Error("Failed to retrieve inserted patient ID");
+    }
+
+    return inserted.id;
+  } catch (error) {
+    console.error("Error executing registerPatiet query:", error);
     throw error;
   }
 };
