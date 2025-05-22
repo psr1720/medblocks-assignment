@@ -1,5 +1,6 @@
 import { PGliteWorker } from "@electric-sql/pglite/worker";
 import type { Patient } from "../models/Patient.model";
+import type { Complaint } from "../models/Complaint.model";
 
 let database: PGliteWorker | null = null;
 
@@ -84,3 +85,21 @@ export const registerPatient = async (patient: Patient): Promise<number | undefi
     throw error;
   }
 };
+
+export const insertComplaint = async(complaint: Complaint) : Promise<number | undefined> => {
+  const database = await initDatabase();
+  try{
+    const result = await database.query(`INSERT INTO complaints (patient_id, date, complaint, doctor, medicine) VALUES ($1, $2, $3, $4, $5)`,
+       [complaint.patient_id, complaint.date, complaint.complaint, complaint.doctor, complaint.medicine]);
+    const inserted = result.rows?.[0] as Complaint;
+
+    if(inserted == undefined) {
+      throw new Error("Failed to retrieve inserted complaint ID");
+    }
+
+    return inserted.id;
+  } catch (error) {
+    console.error("Error executing insertComplaint query");
+    throw error;
+  }
+}
