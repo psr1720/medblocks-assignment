@@ -20,7 +20,7 @@ const initSchema = async (db: PGliteWorker) => {
       );
 
       CREATE TABLE IF NOT EXISTS complaints (
-        id INTEGER PRIMARY KEY,
+        id SERIAL PRIMARY KEY,
         patient_id INTEGER NOT NULL,
         date TEXT NOT NULL,
         complaint TEXT NOT NULL,
@@ -86,20 +86,36 @@ export const registerPatient = async (patient: Patient): Promise<number | undefi
   }
 };
 
-export const insertComplaint = async(complaint: Complaint) : Promise<number | undefined> => {
+export const insertComplaint = async(complaint: Complaint) : Promise<void> => {
   const database = await initDatabase();
   try{
-    const result = await database.query(`INSERT INTO complaints (patient_id, date, complaint, doctor, medicine) VALUES ($1, $2, $3, $4, $5)`,
+    await database.query(`INSERT INTO complaints (patient_id, date, complaint, doctor, medicine) VALUES ($1, $2, $3, $4, $5)`,
        [complaint.patient_id, complaint.date, complaint.complaint, complaint.doctor, complaint.medicine]);
-    const inserted = result.rows?.[0] as Complaint;
-
-    if(inserted == undefined) {
-      throw new Error("Failed to retrieve inserted complaint ID");
-    }
-
-    return inserted.id;
+    
   } catch (error) {
-    console.error("Error executing insertComplaint query");
+    console.error("Error executing insertComplaint query", error);
+    throw error;
+  }
+}
+
+export const getPatientById = async(id: number) : Promise<Patient | undefined> => {
+  const database = await initDatabase()
+  try {
+    const result = await database.query(`SELECT * FROM patients WHERE id = `+id)
+    return result.rows[0] as Patient
+  } catch(error) {
+    console.error("Error executing getPatientById query", error)
+    throw error;
+  }
+}
+
+export const getComplaintsByPatientId = async(patient_id: number) : Promise<Complaint[]> => {
+  const database = await initDatabase();
+  try{
+    const result = await database.query(`SELECT * FROM complaints WHERE patient_id = `+patient_id)
+    return result.rows as Complaint[]
+  } catch (error) {
+    console.error("Error executing getComplaintsByPatientId query", error)
     throw error;
   }
 }

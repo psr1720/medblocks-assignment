@@ -109,7 +109,7 @@ export default function RegisterPatient() {
           {[
             { label: "Name", name: "name", required: true },
             { label: "Phone", name: "phone", required: true },
-            { label: "Date of Birth", name: "dob", required: true },
+            { label: "Date of Birth", name: "dob", required: true, type:"date" },
             { label: "Sex", name: "sex", type: "select", required: true },
             { label: "Email", name: "email" },
             { label: "Address", name: "address" },

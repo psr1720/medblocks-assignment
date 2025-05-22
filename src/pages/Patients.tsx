@@ -94,7 +94,7 @@ const Patients = () => {
         <h1 className="text-2xl font-bold text-blue-600">
           Registered Patients.
         </h1>
-        <p className="mt-2 text-sm text-blue-600">
+        <p className="mt-2 text-[12px] text-blue-600">
           All registered patients. Search for a patient, View Details or Log a Patient Complaint.
         </p>
       </header>
