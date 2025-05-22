@@ -3,7 +3,7 @@ import { PGliteWorker } from "@electric-sql/pglite/worker";
 let database: PGliteWorker | null = null;
 
 const initSchema = async (db: PGliteWorker) => {
-   console.log(await db.exec(`
+  await db.exec(`
     CREATE TABLE IF NOT EXISTS patients (
         id SERIAL PRIMARY KEY,
         name TEXT NOT NULL,
@@ -26,10 +26,10 @@ const initSchema = async (db: PGliteWorker) => {
         medicine TEXT NOT NULL,
         FOREIGN KEY(patient_id) REFERENCES patients(id)
       );
-  `));
-  console.log(await db.exec(`
+  `);
+  await db.exec(`
     CREATE INDEX IF NOT EXISTS idx_patient_name ON patients (name);
-  `));
+  `);
 
   console.log("Database schema initialized");
 };
@@ -55,12 +55,10 @@ export const initDatabase = async (): Promise<PGliteWorker> => {
 export const getAllPatients = async (): Promise<any[]> => {
   const database = await initDatabase();
   try {
-    const result = await database.query(
-      "SELECT * FROM patients"
-    );
+    const result = await database.query("SELECT * FROM patients");
     return result.rows || [];
   } catch (error) {
-    console.error('Error executing getAllPatients query:', error);
+    console.error("Error executing getAllPatients query:", error);
     throw error;
   }
 };
