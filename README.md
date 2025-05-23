@@ -1,5 +1,5 @@
 # medblocks-assignment
-this is my submission for the frontend only patient registration app with pglite. Vercel deployed application URL: https://medblocks-assignment-mocha.vercel.app/
+this is my submission for the frontend only patient registration app with pglite. Vercel deployed application URL: https://medblocks-assignment-five.vercel.app/
 
 ## Setup and usage instructions
 ### Setup
