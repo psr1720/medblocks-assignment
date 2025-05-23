@@ -119,3 +119,14 @@ export const getComplaintsByPatientId = async(patient_id: number) : Promise<Comp
     throw error;
   }
 }
+
+export const runQuery = async (query: string) : Promise<any> => {
+  const database = await initDatabase();
+  try{
+    const result = await database.query(query);
+    return {isSuccess: true, body: result.rows}
+  } catch (error) {
+    console.error("Error executing runQuery query", error)
+    return {isSuccess: false, body: []}
+  }
+}

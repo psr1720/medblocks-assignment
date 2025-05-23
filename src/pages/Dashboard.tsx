@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDatabaseContext } from "../context/DatabaseContext";
 import { getAllPatients } from "../services/DatabaseService";
-import { FileUser, PersonStanding, Plus } from "lucide-react";
+import { Database, FileUser, PersonStanding, Plus } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const Dashboard = () => {
@@ -42,6 +42,12 @@ const Dashboard = () => {
       description: "View a patient's record",
       to: "/view-patient",
     },
+    {
+      icon: <Database size={40} />,
+      heading: "Run Queries",
+      description: "Run raw SQL queries to get data from DB",
+      to: "/run-queries"
+    }
   ];
 
   if (isLoading) {

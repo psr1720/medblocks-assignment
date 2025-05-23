@@ -1,4 +1,4 @@
-import { FileUser, LayoutDashboard, PersonStanding, Plus } from "lucide-react";
+import { Database, FileUser, LayoutDashboard, PersonStanding, Plus } from "lucide-react";
 import { NavLink } from "react-router-dom";
 
 const Leftnav = () => {
@@ -7,6 +7,7 @@ const Leftnav = () => {
     { logo: <PersonStanding />, text: "Patients", to: "/patients" },
     { logo: <Plus />, text: "Register Patient", to: "/register-patient" },
     { logo: <FileUser />, text: "View Patient", to: "/view-patient" },
+    { logo: <Database/>, text: "Run Queries", to: "/run-queries"}
   ];
   const active = "text-blue-600 border-r-3 border-blue-600 bg-blue-100";
   const inactive =

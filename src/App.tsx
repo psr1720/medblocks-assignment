@@ -5,6 +5,7 @@ import Dashboard from './pages/Dashboard';
 import Patients from './pages/Patients';
 import RegisterPatient from './pages/RegisterPatient';
 import ViewPatient from './pages/ViewPatient';
+import RunQueries from './pages/RunQueries';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
             <Route path="/register-patient" element={<RegisterPatient/>}/>
             <Route path="/view-patient" element={<ViewPatient/>}/>
             <Route path="/view-patient/:patientId" element={<ViewPatient/>}/>
+            <Route path="/run-queries" element={<RunQueries />}/>
           </Route>
         </Routes>
       </Router>
